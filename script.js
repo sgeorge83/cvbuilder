@@ -81,26 +81,57 @@ document.getElementById("downloadImageBtn").addEventListener("click", () => {
 });
 
 // ---------------------
-// Pi Payment
+// PI AUTHENTICATION + PAYMENT
 // ---------------------
-if(window.Pi) {
+if (window.Pi) {
     Pi.init({ version: "2.0" });
-    Pi.authenticate(['payments'], auth => console.log("Authenticated:", auth), err => console.error(err));
+
+    // Authenticate with payments scope
+    Pi.authenticate(['payments'])
+      .then(auth => {
+          console.log("Authenticated with payments:", auth);
+      })
+      .catch(error => {
+          console.error("Authentication error:", error);
+      });
 }
 
-document.getElementById("piPayBtn").addEventListener("click", () => {
-    if(!window.Pi) { alert("Open this app in Pi Browser"); return; }
+// Trigger Pi payment
+function triggerPiPayment() {
+    if (!window.Pi) {
+        alert("Please open this app inside the Pi Browser");
+        return;
+    }
 
-    Pi.createPayment({
+    const paymentData = {
         amount: 0.01,
-        memo: "CV-BUILDER Test Payment",
+        memo: "CV-BUILDER test payment",
         metadata: { app: "CV-BUILDER" }
-    }, {
-        onReadyForServerApproval: paymentId => console.log("Approval ID:", paymentId),
-        onReadyForServerCompletion: (paymentId, txid) => alert("Payment Successful"),
-        onCancel: () => alert("Payment Cancelled"),
-        onError: err => { console.error(err); alert("Payment Error"); }
-    });
-});
+    };
+
+    const paymentCallbacks = {
+        onReadyForServerApproval: paymentId => {
+            console.log("Ready for server approval:", paymentId);
+        },
+        onReadyForServerCompletion: (paymentId, txid) => {
+            console.log("Payment completed:", paymentId, txid);
+            alert("Payment Successful");
+        },
+        onCancel: paymentId => {
+            alert("Payment Cancelled");
+        },
+        onError: (error) => {
+            console.error("Payment Error:", error);
+            alert("Payment Error");
+        }
+    };
+
+    Pi.createPayment(paymentData, paymentCallbacks)
+        .then(payment => console.log("createPayment result:", payment))
+        .catch(error => console.error("createPayment catch:", error));
+}
+
+// Attach payment function to button
+document.getElementById("piPayBtn").addEventListener("click", triggerPiPayment);
 
 });
