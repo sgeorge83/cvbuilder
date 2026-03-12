@@ -52,14 +52,14 @@
 <br><br>
 
 <button type="button" id="generateBtn">Generate CV Preview</button>
-<button type="button" id="downloadBtn">Download PDF</button>
+<button type="button" id="downloadImageBtn">Download CV as Image</button>
 <button type="button" id="piPayBtn">Test Pi Payment</button>
 
 </form>
 
 <hr>
 
-<div id="cvPreview">
+<div id="cvPreview" style="border:1px solid #ccc; padding:10px; width:350px;">
 <h2>CV Preview</h2>
 <img id="previewPic" src="assets/placeholder.png" width="120">
 <p id="previewName"></p>
@@ -73,8 +73,8 @@
 
 </div>
 
-<!-- PDF library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- html2canvas for image generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- Pi SDK -->
 <script src="https://www.minepi.com/sdk/pi-sdk.js"></script>
 <script src="script.js"></script>
