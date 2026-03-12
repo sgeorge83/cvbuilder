@@ -1,225 +1,156 @@
-// -----------------------------
-// PI NETWORK INITIALIZATION
-// -----------------------------
+document.addEventListener("DOMContentLoaded", () => {
 
-Pi.init({ version: "2.0" });
+  // ---------------------------
+  // Load job data
+  // ---------------------------
+  let jobData = {};
 
-let authData = null;
+  fetch("jobs.json")
+    .then(res => res.json())
+    .then(data => {
+      jobData = data;
 
-Pi.authenticate([], function(auth) {
-    console.log("User authenticated");
-    authData = auth;
-});
+      const datalist = document.getElementById("designations");
 
-
-// -----------------------------
-// LOAD JOB DATA
-// -----------------------------
-
-let jobData = {};
-
-fetch('jobs.json')
-.then(response => response.json())
-.then(data => {
-
-    jobData = data;
-
-    const designationList = document.getElementById("designations");
-
-    for (let title in jobData) {
-
+      Object.keys(jobData).forEach(job => {
         const option = document.createElement("option");
+        option.value = job;
+        datalist.appendChild(option);
+      });
+    })
+    .catch(err => console.error("jobs.json error:", err));
 
-        option.value = title;
 
-        designationList.appendChild(option);
+  // ---------------------------
+  // Update job descriptions
+  // ---------------------------
+  document.getElementById("designation").addEventListener("input", function () {
 
+    const jobDescription = document.getElementById("jobDescription");
+    jobDescription.innerHTML = '<option value="">Select Job Description</option>';
+
+    const selected = this.value;
+
+    if (jobData[selected]) {
+      jobData[selected].forEach(desc => {
+        const option = document.createElement("option");
+        option.value = desc;
+        option.textContent = desc;
+        jobDescription.appendChild(option);
+      });
     }
 
-});
+  });
 
 
-// -----------------------------
-// UPDATE JOB DESCRIPTIONS
-// -----------------------------
-
-document.getElementById("designation").addEventListener("input", function(){
-
-    const jobDescriptionSelect = document.getElementById("jobDescription");
-
-    jobDescriptionSelect.innerHTML = '<option value="">Select Job Description</option>';
-
-    const selected = this.value.trim();
-
-    if(jobData[selected]){
-
-        jobData[selected].forEach(function(desc){
-
-            const option = document.createElement("option");
-
-            option.value = desc;
-
-            option.textContent = desc;
-
-            jobDescriptionSelect.appendChild(option);
-
-        });
-
-    } else if(selected !== ""){
-
-        const option = document.createElement("option");
-
-        option.value = "";
-
-        option.textContent = "Enter your own job description";
-
-        jobDescriptionSelect.appendChild(option);
-
-    }
-
-});
-
-
-// -----------------------------
-// PROFILE PHOTO UPLOAD
-// -----------------------------
-
-const profileInput = document.getElementById("profilePic");
-
-profileInput.addEventListener("change", function(){
+  // ---------------------------
+  // Profile image preview
+  // ---------------------------
+  document.getElementById("profilePic").addEventListener("change", function () {
 
     const file = this.files[0];
+    if (!file) return;
 
-    if(file){
+    const reader = new FileReader();
 
-        const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById("previewPic").src = e.target.result;
+    };
 
-        reader.onload = function(e){
+    reader.readAsDataURL(file);
 
-            document.getElementById("previewPic").src = e.target.result;
-
-        };
-
-        reader.readAsDataURL(file);
-
-    }
-
-});
+  });
 
 
-// -----------------------------
-// GENERATE CV PREVIEW
-// -----------------------------
+  // ---------------------------
+  // Generate CV Preview
+  // ---------------------------
+  document.getElementById("generateBtn").addEventListener("click", () => {
 
-document.getElementById("generateBtn").addEventListener("click", function(){
+    document.getElementById("previewName").textContent =
+      document.getElementById("fullName").value;
 
-    const fullName = document.getElementById("fullName").value;
+    document.getElementById("previewDOB").textContent =
+      "DOB: " + document.getElementById("dob").value;
 
-    const dob = document.getElementById("dob").value;
-
-    const nationality = document.getElementById("nationality").value;
-
-    const passportNumber = document.getElementById("passportNumber").value;
-
-    const passportExpiry = document.getElementById("passportExpiry").value;
-
-    const visaStatus = document.getElementById("visaStatus").value;
-
-    const visaExpiry = document.getElementById("visaExpiry").value;
-
-    const designation = document.getElementById("designation").value;
-
-    let jobDescription = document.getElementById("jobDescription").value;
-
-
-    if(jobDescription === ""){
-
-        jobDescription = prompt("Please enter your job description:");
-
-    }
-
-    document.getElementById("previewName").textContent = fullName;
-
-    document.getElementById("previewDOB").textContent = "DOB: " + dob;
-
-    document.getElementById("previewNationality").textContent = "Nationality: " + nationality;
+    document.getElementById("previewNationality").textContent =
+      "Nationality: " + document.getElementById("nationality").value;
 
     document.getElementById("previewPassport").textContent =
-        "Passport No: " + passportNumber + " | Expiry: " + passportExpiry;
+      "Passport: " +
+      document.getElementById("passportNumber").value +
+      " | Exp: " +
+      document.getElementById("passportExpiry").value;
 
     document.getElementById("previewVisa").textContent =
-        "Visa Status: " + visaStatus + " | Expiry: " + visaExpiry;
+      "Visa: " +
+      document.getElementById("visaStatus").value +
+      " | Exp: " +
+      document.getElementById("visaExpiry").value;
 
     document.getElementById("previewDesignation").textContent =
-        "Designation: " + designation;
+      "Designation: " +
+      document.getElementById("designation").value;
 
     document.getElementById("previewJobDescription").textContent =
-        "Job Description: " + jobDescription;
+      "Job: " +
+      document.getElementById("jobDescription").value;
 
-});
+  });
 
 
-// -----------------------------
-// DOWNLOAD PDF
-// -----------------------------
-
-document.getElementById("downloadBtn").addEventListener("click", function(){
+  // ---------------------------
+  // Download PDF
+  // ---------------------------
+  document.getElementById("downloadBtn").addEventListener("click", () => {
 
     const element = document.getElementById("cvPreview");
 
     html2pdf().from(element).save("CV-BUILDER.pdf");
 
-});
+  });
 
 
-// -----------------------------
-// PI PAYMENT TEST
-// -----------------------------
+  // ---------------------------
+  // Pi Payment
+  // ---------------------------
+  const payBtn = document.getElementById("piPayBtn");
 
-document.getElementById("piPayBtn").addEventListener("click", function(){
+  payBtn.addEventListener("click", () => {
 
-    Pi.createPayment({
+    if (!window.Pi) {
+      alert("Open this app inside Pi Browser");
+      return;
+    }
 
-        amount: 0.1,
+    Pi.init({ version: "2.0" });
 
+    Pi.createPayment(
+      {
+        amount: 0.01,
         memo: "CV-BUILDER Test Payment",
+        metadata: { app: "CV-BUILDER" }
+      },
+      {
+        onReadyForServerApproval: paymentId => {
+          console.log(paymentId);
+        },
 
-        metadata: {
-            app: "CV-BUILDER"
+        onReadyForServerCompletion: (paymentId, txid) => {
+          alert("Payment Successful");
+        },
+
+        onCancel: () => {
+          alert("Payment Cancelled");
+        },
+
+        onError: err => {
+          console.error(err);
+          alert("Payment Error");
         }
+      }
+    );
 
-    },
-
-    {
-
-        onReadyForServerApproval: function(paymentId){
-
-            console.log("Ready for server approval", paymentId);
-
-        },
-
-        onReadyForServerCompletion: function(paymentId, txid){
-
-            console.log("Ready for server completion", paymentId, txid);
-
-            alert("Payment Successful!");
-
-        },
-
-        onCancel: function(paymentId){
-
-            alert("Payment Cancelled");
-
-        },
-
-        onError: function(error){
-
-            console.error(error);
-
-            alert("Payment Error");
-
-        }
-
-    });
+  });
 
 });
