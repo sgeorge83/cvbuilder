@@ -1,70 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAE CV Builder</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAE CV Builder</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="container">
-        <h1>UAE CV Builder</h1>
 
-        <form id="cvForm">
-            <h2>Personal Details</h2>
-            <label>Full Name:</label>
-            <input type="text" id="fullName" required>
+<div class="container">
 
-            <label>Date of Birth:</label>
-            <input type="date" id="dob" required>
+<h1>UAE CV Builder</h1>
 
-            <label>Nationality:</label>
-            <input type="text" id="nationality" required>
+<form id="cvForm">
 
-            <label>Passport Number:</label>
-            <input type="text" id="passportNumber" required>
+<h2>Personal Details</h2>
 
-            <label>Passport Expiry Date:</label>
-            <input type="date" id="passportExpiry" required>
+<label>Full Name</label>
+<input type="text" id="fullName">
 
-            <label>UAE Visa Status:</label>
-            <input type="text" id="visaStatus" required>
+<label>Date of Birth</label>
+<input type="date" id="dob">
 
-            <label>Visa Expiry Date:</label>
-            <input type="date" id="visaExpiry" required>
+<label>Nationality</label>
+<input type="text" id="nationality">
 
-            <label>Designation:</label>
-            <input list="designations" id="designation" required>
-            <datalist id="designations"></datalist>
+<label>Passport Number</label>
+<input type="text" id="passportNumber">
 
-            <label>Job Description:</label>
-            <select id="jobDescription" required>
-                <option value="">Select Job Description</option>
-            </select>
+<label>Passport Expiry</label>
+<input type="date" id="passportExpiry">
 
-            <label>Profile Picture:</label>
-            <input type="file" id="profilePic" accept="image/*" capture="environment">
+<label>Visa Status (UAE)</label>
+<input type="text" id="visaStatus">
 
-            <button type="button" id="generateBtn">Generate CV Preview</button>
-            <button type="button" id="downloadBtn">Download PDF</button>
-        </form>
+<label>Visa Expiry</label>
+<input type="date" id="visaExpiry">
 
-        <div id="cvPreview">
-            <h2>CV Preview</h2>
-            <div id="previewContent">
-                <img id="previewPic" src="assets/placeholder.png" alt="Profile Picture">
-                <p id="previewName"></p>
-                <p id="previewDOB"></p>
-                <p id="previewNationality"></p>
-                <p id="previewPassport"></p>
-                <p id="previewVisa"></p>
-                <p id="previewDesignation"></p>
-                <p id="previewJobDescription"></p>
-            </div>
-        </div>
-    </div>
+<label>Designation</label>
+<input list="designations" id="designation">
+<datalist id="designations"></datalist>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="script.js"></script>
+<label>Job Description</label>
+<select id="jobDescription">
+<option value="">Select Job Description</option>
+</select>
+
+<label>Upload Photo</label>
+<input type="file" id="profilePic" accept="image/*" capture="environment">
+
+<button type="button" id="generateBtn">Generate CV Preview</button>
+
+<button type="button" id="downloadBtn">Download PDF</button>
+
+<!-- PI PAYMENT BUTTON -->
+<button type="button" id="Payhere">Test Pi Payment</button>
+
+</form>
+
+<div id="cvPreview">
+
+<h2>CV Preview</h2>
+
+<img id="previewPic" src="assets/placeholder.png">
+
+<p id="previewName"></p>
+<p id="previewDOB"></p>
+<p id="previewNationality"></p>
+<p id="previewPassport"></p>
+<p id="previewVisa"></p>
+<p id="previewDesignation"></p>
+<p id="previewJobDescription"></p>
+
+</div>
+
+</div>
+
+<!-- PDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<!-- PI SDK -->
+<script src="https://www.minepi.com/sdk/pi-sdk.js"></script>
+
+<script src="script.js"></script>
+
 </body>
 </html>
