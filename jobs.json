@@ -1,0 +1,37 @@
+{
+  "Electrician": [
+    "Install and maintain electrical systems in residential and commercial buildings",
+    "Diagnose electrical problems and perform repairs safely",
+    "Ensure compliance with UAE safety regulations and standards"
+  ],
+  "Plumber": [
+    "Install, repair, and maintain plumbing systems",
+    "Fix leaks, clogs, and pipe issues in residential and commercial properties",
+    "Perform maintenance according to UAE building codes"
+  ],
+  "Construction Laborer": [
+    "Assist with on-site construction tasks and manual labor",
+    "Handle materials, equipment, and tools safely",
+    "Support skilled workers like masons and carpenters in project completion"
+  ],
+  "Carpenter": [
+    "Cut, shape, and assemble wooden structures and furniture",
+    "Repair or replace damaged wooden components",
+    "Follow project plans and safety protocols in UAE construction sites"
+  ],
+  "Cleaner / Janitor": [
+    "Maintain cleanliness of residential, office, or industrial spaces",
+    "Handle waste disposal and sanitation tasks",
+    "Follow hygiene and safety standards required in UAE workplaces"
+  ],
+  "Driver": [
+    "Transport goods or passengers safely according to UAE traffic rules",
+    "Maintain and check vehicle condition regularly",
+    "Plan routes efficiently and adhere to schedules"
+  ],
+  "Security Guard": [
+    "Monitor and secure residential or commercial premises",
+    "Control access and report security incidents",
+    "Follow UAE security regulations and emergency protocols"
+  ]
+}
