@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UAE CV Builder</title>
+
+<title>CV-BUILDER</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>UAE CV Builder</h1>
+<h1>CV-BUILDER</h1>
 
 <form id="cvForm">
 
@@ -50,20 +54,23 @@
 <label>Upload Photo</label>
 <input type="file" id="profilePic" accept="image/*" capture="environment">
 
+<br><br>
+
 <button type="button" id="generateBtn">Generate CV Preview</button>
 
 <button type="button" id="downloadBtn">Download PDF</button>
 
-<!-- PI PAYMENT BUTTON -->
-<button type="button" id="Payhere">Test Pi Payment</button>
+<button type="button" id="piPayBtn">Test Pi Payment</button>
 
 </form>
+
+<hr>
 
 <div id="cvPreview">
 
 <h2>CV Preview</h2>
 
-<img id="previewPic" src="assets/placeholder.png">
+<img id="previewPic" src="assets/placeholder.png" width="120">
 
 <p id="previewName"></p>
 <p id="previewDOB"></p>
@@ -77,7 +84,7 @@
 
 </div>
 
-<!-- PDF Library -->
+<!-- PDF LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <!-- PI SDK -->
