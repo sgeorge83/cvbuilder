@@ -11,15 +11,33 @@
 "Maintain plumbing fixtures"
 ],
 
-"Mason":[
-"Brick laying and wall construction",
-"Concrete mixing and pouring",
-"Plastering surfaces"
+"Construction Laborer":[
+"Material handling at construction site",
+"Assist engineers and supervisors",
+"Operate basic construction tools"
 ],
 
-"Construction Worker":[
-"Material handling at site",
-"Assist engineers and supervisors",
-"Operate construction tools"
+"Carpenter":[
+"Woodwork and furniture construction",
+"Repair and maintain wooden structures",
+"Follow blueprint and measurements"
+],
+
+"Cleaner / Janitor":[
+"Clean offices and buildings",
+"Maintain sanitation equipment",
+"Handle waste management properly"
+],
+
+"Driver":[
+"Transport staff or goods",
+"Maintain vehicle condition",
+"Follow UAE traffic regulations"
+],
+
+"Security Guard":[
+"Monitor premises for safety",
+"Control access to facilities",
+"Report incidents to supervisors"
 ]
 }
