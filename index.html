@@ -1,38 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CV-BUILDER</title>
-<link rel="stylesheet" href="style.css">
+
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:linear-gradient(135deg,#ff8a00,#e52e71);
+padding:20px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+margin:6px 0;
+}
+
+button{
+padding:12px;
+margin-top:10px;
+cursor:pointer;
+width:100%;
+font-weight:bold;
+}
+
+#cvPreview{
+
+width:794px;
+min-height:1123px;
+
+background:white;
+color:black;
+
+padding:40px;
+
+margin-top:40px;
+
+box-shadow:0 5px 20px rgba(0,0,0,0.25);
+
+}
+
+.cvHeader{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.cvHeader img{
+width:120px;
+height:120px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.section{
+margin-top:20px;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <div class="container">
 
-<h1>CV-BUILDER</h1>
-
-<form id="cvForm">
-
-<h2>Personal Details</h2>
+<h1>CV BUILDER</h1>
 
 <label>Full Name</label>
-<input type="text" id="fullName">
+<input id="fullName">
 
 <label>Date of Birth</label>
 <input type="date" id="dob">
 
 <label>Nationality</label>
-<input type="text" id="nationality">
+<input id="nationality">
 
 <label>Passport Number</label>
-<input type="text" id="passportNumber">
+<input id="passportNumber">
 
 <label>Passport Expiry</label>
 <input type="date" id="passportExpiry">
 
-<label>Visa Status (UAE)</label>
-<input type="text" id="visaStatus">
+<label>Visa Status UAE</label>
+<input id="visaStatus">
 
 <label>Visa Expiry</label>
 <input type="date" id="visaExpiry">
@@ -41,45 +117,91 @@
 <input list="designations" id="designation">
 <datalist id="designations"></datalist>
 
-<label>Job Description</label>
-<select id="jobDescription">
-<option value="">Select Job Description</option>
-</select>
+<label>Job Responsibilities</label>
+
+<select id="jobDescription1"></select>
+<select id="jobDescription2"></select>
+<select id="jobDescription3"></select>
+
+<textarea id="extraResponsibilities" placeholder="Additional responsibilities"></textarea>
+
+<label>Education</label>
+<textarea id="education"></textarea>
+
+<label>Work Experience</label>
+<textarea id="experience"></textarea>
+
+<label>Skills</label>
+<textarea id="skills"></textarea>
+
+<label>Languages</label>
+<textarea id="languages"></textarea>
 
 <label>Upload Photo</label>
 <input type="file" id="profilePic" accept="image/*" capture="environment">
 
-<br><br>
+<button id="generateBtn">Generate CV</button>
 
-<button type="button" id="generateBtn">Generate CV Preview</button>
-<button type="button" id="downloadImageBtn">Download CV as Image</button>
-<button type="button" id="piPayBtn">Test Pi Payment</button>
+<button id="piPayBtn">Proceed to Pay with Pi</button>
 
-</form>
+<button id="downloadImageBtn" disabled>Download CV</button>
+
+<div id="cvPreview">
+
+<div class="cvHeader">
+
+<img id="previewPic">
+
+<div>
+
+<h2 id="previewName"></h2>
+<p id="previewDesignation"></p>
+
+</div>
+
+</div>
 
 <hr>
 
-<div id="cvPreview" style="border:1px solid #ccc; padding:10px; width:350px;">
-<h2>CV Preview</h2>
-<img id="previewPic" src="assets/placeholder.png" width="120">
-<p id="previewName"></p>
-<p id="previewDOB"></p>
-<p id="previewNationality"></p>
-<p id="previewPassport"></p>
-<p id="previewVisa"></p>
-<p id="previewDesignation"></p>
-<p id="previewJobDescription"></p>
+<div class="section">
+<h3>Personal Information</h3>
+
+<p><b>Date of Birth:</b> <span id="previewDOB"></span></p>
+<p><b>Nationality:</b> <span id="previewNationality"></span></p>
+<p><b>Passport:</b> <span id="previewPassport"></span></p>
+<p><b>Visa Status:</b> <span id="previewVisa"></span></p>
+
+</div>
+
+<div class="section">
+<h3>Professional Responsibilities</h3>
+<ul id="previewResponsibilities"></ul>
+</div>
+
+<div class="section">
+<h3>Education</h3>
+<p id="previewEducation"></p>
+</div>
+
+<div class="section">
+<h3>Work Experience</h3>
+<p id="previewExperience"></p>
+</div>
+
+<div class="section">
+<h3>Skills</h3>
+<p id="previewSkills"></p>
+</div>
+
+<div class="section">
+<h3>Languages</h3>
+<p id="previewLanguages"></p>
 </div>
 
 </div>
 
-<!-- html2canvas for image download -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</div>
 
-<!-- Pi SDK -->
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
-<!-- Your updated script.js -->
 <script src="script.js"></script>
 
 </body>
