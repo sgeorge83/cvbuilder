@@ -1,137 +1,180 @@
-document.addEventListener("DOMContentLoaded", () => {
+Pi.init({ version: "2.0" });
 
-let jobData = {};
+let currentUser=null;
 
-// ---------------------
-// Load jobs.json
-// ---------------------
+Pi.authenticate(['payments'],function(payment){
+console.log("Incomplete payment",payment);
+}).then(function(auth){
+currentUser=auth.user;
+}).catch(function(error){
+console.error(error);
+});
+
+let jobData={};
+
 fetch("jobs.json")
-.then(res => res.json())
-.then(data => {
-    jobData = data;
-    const datalist = document.getElementById("designations");
-    Object.keys(jobData).forEach(job => {
-        const option = document.createElement("option");
-        option.value = job;
-        datalist.appendChild(option);
-    });
-})
-.catch(err => console.error("jobs.json error:", err));
+.then(res=>res.json())
+.then(data=>{
 
-// ---------------------
-// Update job descriptions dynamically
-// ---------------------
-document.getElementById("designation").addEventListener("input", function() {
-    const selected = this.value;
-    const jobDescription = document.getElementById("jobDescription");
-    jobDescription.innerHTML = '<option value="">Select Job Description</option>';
-    if(jobData[selected]) {
-        jobData[selected].forEach(desc => {
-            const option = document.createElement("option");
-            option.value = desc;
-            option.textContent = desc;
-            jobDescription.appendChild(option);
-        });
-    }
+jobData=data;
+
+const datalist=document.getElementById("designations");
+
+Object.keys(jobData).forEach(job=>{
+const option=document.createElement("option");
+option.value=job;
+datalist.appendChild(option);
 });
 
-// ---------------------
-// Profile photo preview
-// ---------------------
-document.getElementById("profilePic").addEventListener("change", function() {
-    const file = this.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = e => document.getElementById("previewPic").src = e.target.result;
-    reader.readAsDataURL(file);
 });
 
-// ---------------------
-// Generate CV Preview
-// ---------------------
-document.getElementById("generateBtn").addEventListener("click", () => {
-    document.getElementById("previewName").textContent = document.getElementById("fullName").value;
-    document.getElementById("previewDOB").textContent = "DOB: " + document.getElementById("dob").value;
-    document.getElementById("previewNationality").textContent = "Nationality: " + document.getElementById("nationality").value;
-    document.getElementById("previewPassport").textContent =
-        "Passport: " + document.getElementById("passportNumber").value +
-        " | Exp: " + document.getElementById("passportExpiry").value;
-    document.getElementById("previewVisa").textContent =
-        "Visa: " + document.getElementById("visaStatus").value +
-        " | Exp: " + document.getElementById("visaExpiry").value;
-    document.getElementById("previewDesignation").textContent = "Designation: " + document.getElementById("designation").value;
-    document.getElementById("previewJobDescription").textContent = "Job Description: " + document.getElementById("jobDescription").value;
+document.getElementById("designation").addEventListener("input",function(){
+
+const selected=this.value;
+
+const selects=[
+document.getElementById("jobDescription1"),
+document.getElementById("jobDescription2"),
+document.getElementById("jobDescription3")
+];
+
+selects.forEach(select=>{
+
+select.innerHTML="";
+
+if(jobData[selected]){
+
+jobData[selected].forEach(desc=>{
+
+const option=document.createElement("option");
+option.value=desc;
+option.textContent=desc;
+
+select.appendChild(option);
+
 });
 
-// ---------------------
-// Download CV as Image
-// ---------------------
-document.getElementById("downloadImageBtn").addEventListener("click", () => {
-    const cv = document.getElementById("cvPreview");
-    html2canvas(cv).then(canvas => {
-        canvas.toBlob(blob => {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "CV-BUILDER.png";
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-    });
-});
-
-// ---------------------
-// PI AUTHENTICATION + PAYMENT
-// ---------------------
-if (window.Pi) {
-    Pi.init({ version: "2.0" });
-
-    // Authenticate with payments scope
-    Pi.authenticate(['payments'])
-      .then(auth => {
-          console.log("Authenticated with payments:", auth);
-      })
-      .catch(error => {
-          console.error("Authentication error:", error);
-      });
 }
 
-// Trigger Pi payment
-function triggerPiPayment() {
-    if (!window.Pi) {
-        alert("Please open this app inside the Pi Browser");
-        return;
-    }
-
-    const paymentData = {
-        amount: 0.01,
-        memo: "CV-BUILDER test payment",
-        metadata: { app: "CV-BUILDER" }
-    };
-
-    const paymentCallbacks = {
-        onReadyForServerApproval: paymentId => {
-            console.log("Ready for server approval:", paymentId);
-        },
-        onReadyForServerCompletion: (paymentId, txid) => {
-            console.log("Payment completed:", paymentId, txid);
-            alert("Payment Successful");
-        },
-        onCancel: paymentId => {
-            alert("Payment Cancelled");
-        },
-        onError: (error) => {
-            console.error("Payment Error:", error);
-            alert("Payment Error");
-        }
-    };
-
-    Pi.createPayment(paymentData, paymentCallbacks)
-        .then(payment => console.log("createPayment result:", payment))
-        .catch(error => console.error("createPayment catch:", error));
-}
-
-// Attach payment function to button
-document.getElementById("piPayBtn").addEventListener("click", triggerPiPayment);
+});
 
 });
+
+document.getElementById("profilePic").addEventListener("change",function(){
+
+const file=this.files[0];
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+document.getElementById("previewPic").src=e.target.result;
+};
+
+reader.readAsDataURL(file);
+
+});
+
+document.getElementById("generateBtn").addEventListener("click",function(){
+
+document.getElementById("previewName").innerText=document.getElementById("fullName").value;
+
+document.getElementById("previewDesignation").innerText=document.getElementById("designation").value;
+
+document.getElementById("previewDOB").innerText=document.getElementById("dob").value;
+
+document.getElementById("previewNationality").innerText=document.getElementById("nationality").value;
+
+document.getElementById("previewPassport").innerText=
+document.getElementById("passportNumber").value+" Exp "+document.getElementById("passportExpiry").value;
+
+document.getElementById("previewVisa").innerText=
+document.getElementById("visaStatus").value+" Exp "+document.getElementById("visaExpiry").value;
+
+let responsibilities=[];
+
+responsibilities.push(document.getElementById("jobDescription1").value);
+responsibilities.push(document.getElementById("jobDescription2").value);
+responsibilities.push(document.getElementById("jobDescription3").value);
+
+let extra=document.getElementById("extraResponsibilities").value;
+
+if(extra.trim()!=""){
+responsibilities.push(extra);
+}
+
+const list=document.getElementById("previewResponsibilities");
+
+list.innerHTML="";
+
+responsibilities.forEach(item=>{
+if(item){
+let li=document.createElement("li");
+li.innerText=item;
+list.appendChild(li);
+}
+});
+
+document.getElementById("previewEducation").innerText=document.getElementById("education").value;
+
+document.getElementById("previewExperience").innerText=document.getElementById("experience").value;
+
+document.getElementById("previewSkills").innerText=document.getElementById("skills").value;
+
+document.getElementById("previewLanguages").innerText=document.getElementById("languages").value;
+
+});
+
+document.getElementById("downloadImageBtn").addEventListener("click",function(){
+
+html2canvas(document.getElementById("cvPreview"),{scale:2})
+.then(canvas=>{
+
+const link=document.createElement("a");
+
+link.download="Professional-CV.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+});
+
+});
+
+function makePayment(){
+
+const paymentData={
+amount:0.01,
+memo:"CV Builder Payment",
+metadata:{product:"CV"}
+};
+
+const paymentCallbacks={
+
+onReadyForServerApproval:function(paymentId){
+console.log(paymentId);
+},
+
+onReadyForServerCompletion:function(paymentId,txid){
+
+alert("Payment Successful");
+
+document.getElementById("downloadImageBtn").disabled=false;
+
+},
+
+onCancel:function(){
+console.log("Payment cancelled");
+},
+
+onError:function(error){
+console.error(error);
+}
+
+};
+
+Pi.createPayment(paymentData,paymentCallbacks);
+
+}
+
+document.getElementById("piPayBtn").addEventListener("click",makePayment);
