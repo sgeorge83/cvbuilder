@@ -1,16 +1,7 @@
 {
   "name": "cvbuilder",
   "version": "1.0.0",
-  "description": "CV Builder application",
-  "main": "index.js",
   "scripts": {
-    "build": "echo \"No build needed\"",
-    "start": "echo \"Static site\""
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "webpack": "^5.0.0",
-    "webpack-cli": "^5.0.0"
+    "build": "echo \"no build needed\""
   }
 }
