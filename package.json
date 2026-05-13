@@ -4,8 +4,8 @@
   "description": "CV Builder application",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve"
+    "build": "echo \"No build needed\"",
+    "start": "echo \"Static site\""
   },
   "dependencies": {
   },
