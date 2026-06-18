@@ -12,8 +12,13 @@ function showError(message) {
   formError.hidden = !message;
 }
 
+function canDownload() {
+  return downloadUnlocked || isDownloadUnlocked();
+}
+
 function setDownloadButtons(enabled) {
   downloadUnlocked = enabled;
+  if (enabled) setDownloadUnlocked(true);
   downloadPngBtn.disabled = !enabled;
   downloadPdfBtn.disabled = !enabled;
 }
@@ -55,6 +60,60 @@ function formatDate(value) {
   }
 }
 
+function hasContent(value) {
+  return Boolean(value && value.trim() && value.trim() !== "—");
+}
+
+function toggleSection(sectionId, visible) {
+  const el = document.getElementById(sectionId);
+  if (el) el.classList.toggle("is-hidden", !visible);
+}
+
+function renderTags(containerId, text, soft) {
+  const container = document.getElementById(containerId);
+  if (!container) return false;
+
+  container.innerHTML = "";
+  if (!hasContent(text)) return false;
+
+  const items = text
+    .split(/[,;\n]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (!items.length) {
+    const span = document.createElement("span");
+    span.className = "cv-prose";
+    span.textContent = text.trim();
+    container.appendChild(span);
+    return true;
+  }
+
+  items.forEach((item) => {
+    const tag = document.createElement("span");
+    tag.className = "cv-tag";
+    tag.textContent = item;
+    container.appendChild(tag);
+  });
+
+  if (soft) container.classList.add("cv-tags--soft");
+  return true;
+}
+
+function setProse(id, text) {
+  const el = document.getElementById(id);
+  const value = text.trim() || "—";
+  el.textContent = value;
+  return hasContent(value);
+}
+
+function updatePhotoWrap() {
+  const pic = document.getElementById("previewPic");
+  const wrap = document.getElementById("previewPhotoWrap");
+  const hasPhoto = pic && pic.src && pic.src.startsWith("data:");
+  if (wrap) wrap.classList.toggle("is-empty", !hasPhoto);
+}
+
 function populateJobSelects(designation) {
   const selects = [
     document.getElementById("jobDescription1"),
@@ -85,12 +144,13 @@ function populateJobSelects(designation) {
 }
 
 function generatePreview() {
-  if (!validateForm()) return;
+  if (!validateForm()) return false;
 
   document.getElementById("previewName").textContent =
     document.getElementById("fullName").value.trim();
   document.getElementById("previewDesignation").textContent =
     document.getElementById("designation").value.trim();
+
   document.getElementById("previewDOB").textContent = formatDate(
     document.getElementById("dob").value
   );
@@ -119,29 +179,65 @@ function generatePreview() {
 
   const list = document.getElementById("previewResponsibilities");
   list.innerHTML = "";
-  responsibilities.filter(Boolean).forEach((item) => {
+  const respItems = responsibilities.filter(Boolean);
+  respItems.forEach((item) => {
     const li = document.createElement("li");
     li.textContent = item;
     list.appendChild(li);
   });
+  toggleSection("sectionResponsibilities", respItems.length > 0);
 
-  document.getElementById("previewEducation").textContent =
-    document.getElementById("education").value.trim() || "—";
-  document.getElementById("previewExperience").textContent =
-    document.getElementById("experience").value.trim() || "—";
-  document.getElementById("previewSkills").textContent =
-    document.getElementById("skills").value.trim() || "—";
-  document.getElementById("previewLanguages").textContent =
-    document.getElementById("languages").value.trim() || "—";
+  const hasExperience = setProse(
+    "previewExperience",
+    document.getElementById("experience").value
+  );
+  toggleSection("sectionExperience", hasExperience);
 
+  const hasEducation = setProse(
+    "previewEducation",
+    document.getElementById("education").value
+  );
+  toggleSection("sectionEducation", hasEducation);
+
+  const hasSkills = renderTags("previewSkills", document.getElementById("skills").value);
+  toggleSection("sectionSkills", hasSkills);
+
+  const hasLanguages = renderTags(
+    "previewLanguages",
+    document.getElementById("languages").value,
+    true
+  );
+  toggleSection("sectionLanguages", hasLanguages);
+
+  updatePhotoWrap();
   saveDraft();
   draftStatus.textContent = t("draftSaved");
 
-  if (!downloadUnlocked) {
+  if (!canDownload()) {
     setDownloadButtons(false);
   }
 
   document.getElementById("cvPreview").scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+}
+
+function runExport(exportFn, button) {
+  if (!canDownload()) return;
+  if (!validateForm()) return;
+  if (!generatePreview()) return;
+
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = t("exportPreparing");
+
+  exportFn()
+    .catch(() => {
+      alert(t("exportFailed"));
+    })
+    .finally(() => {
+      button.disabled = !canDownload();
+      button.textContent = originalText;
+    });
 }
 
 function loadJobs() {
@@ -174,6 +270,7 @@ function initApp() {
     setLanguage(e.target.value);
     const designation = document.getElementById("designation").value;
     if (designation) populateJobSelects(designation);
+    if (document.getElementById("previewName").textContent) generatePreview();
   });
 
   document.getElementById("designation").addEventListener("input", (e) => {
@@ -186,6 +283,7 @@ function initApp() {
     const reader = new FileReader();
     reader.onload = (ev) => {
       document.getElementById("previewPic").src = ev.target.result;
+      updatePhotoWrap();
       saveDraft();
     };
     reader.readAsDataURL(file);
@@ -213,41 +311,50 @@ function initApp() {
   devUnlockBtn.addEventListener("click", () => {
     if (devUnlockDownloads()) {
       setDownloadButtons(true);
-      devUnlockBtn.textContent = "✓ " + t("downloadPngBtn").replace("Download ", "");
+      devUnlockBtn.textContent = "✓ " + t("downloadUnlocked");
     }
   });
 
   downloadPngBtn.addEventListener("click", () => {
-    if (!downloadUnlocked) return;
-    downloadPng().catch((e) => console.error(e));
+    runExport(downloadPng, downloadPngBtn);
   });
 
   downloadPdfBtn.addEventListener("click", () => {
-    if (!downloadUnlocked) return;
-    downloadPdf().catch((e) => console.error(e));
+    runExport(downloadPdf, downloadPdfBtn);
   });
 
   document.getElementById("clearDraftBtn").addEventListener("click", () => {
     clearDraft();
     document.getElementById("cvForm").reset();
     document.getElementById("previewPic").removeAttribute("src");
+    updatePhotoWrap();
     [
       "previewName",
       "previewDesignation",
       "previewDOB",
       "previewNationality",
       "previewPassport",
-      "previewVisa",
-      "previewEducation",
-      "previewExperience",
-      "previewSkills",
-      "previewLanguages"
+      "previewVisa"
     ].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.textContent = "";
     });
     document.getElementById("previewResponsibilities").innerHTML = "";
+    document.getElementById("previewSkills").innerHTML = "";
+    document.getElementById("previewLanguages").innerHTML = "";
+    ["previewExperience", "previewEducation"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "";
+    });
+    [
+      "sectionResponsibilities",
+      "sectionExperience",
+      "sectionEducation",
+      "sectionSkills",
+      "sectionLanguages"
+    ].forEach((id) => toggleSection(id, false));
     draftStatus.textContent = "";
+    document.getElementById("exportStatus").textContent = "";
     setDownloadButtons(false);
     setDownloadUnlocked(false);
   });
@@ -258,6 +365,7 @@ function initApp() {
 
   if (loadDraft()) {
     draftStatus.textContent = t("draftSaved");
+    updatePhotoWrap();
   }
 
   if (isDownloadUnlocked()) {

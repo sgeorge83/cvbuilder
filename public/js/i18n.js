@@ -48,7 +48,13 @@ const I18N = {
     previewVisa: "Visa Status",
     exp: "Exp",
     selectResponsibility: "Select responsibility",
-    poweredBy: "UAE CV Builder — Pi Network App"
+    poweredBy: "UAE CV Builder — Pi Network App",
+    cvEyebrow: "Curriculum Vitae",
+    cvTagline: "Skilled Professional — UAE Employment Ready",
+    exportPreparing: "Preparing your CV file…",
+    exportSuccess: "Download started — check your files folder.",
+    exportFailed: "Download failed. Tap Generate CV Preview first, then try again.",
+    downloadUnlocked: "Downloads unlocked"
   },
   hi: {
     appTitle: "यूएई सीवी बिल्डर",
@@ -97,7 +103,13 @@ const I18N = {
     previewVisa: "वीज़ा स्थिति",
     exp: "समाप्ति",
     selectResponsibility: "जिम्मेदारी चुनें",
-    poweredBy: "यूएई सीवी बिल्डर — Pi Network ऐप"
+    poweredBy: "यूएई सीवी बिल्डर — Pi Network ऐप",
+    cvEyebrow: "बायोडाटा",
+    cvTagline: "कुशल पेशेवर — यूएई रोजगार के लिए तैयार",
+    exportPreparing: "आपकी सीवी फ़ाइल तैयार हो रही है…",
+    exportSuccess: "डाउनलोड शुरू — अपने फ़ाइल फ़ोल्डर में देखें।",
+    exportFailed: "डाउनलोड विफल। पहले सीवी पूर्वावलोकन बनाएं, फिर पुनः प्रयास करें।",
+    downloadUnlocked: "डाउनलोड अनलॉक"
   },
   ur: {
     appTitle: "یو اے ای سی وی بلڈر",
@@ -146,7 +158,13 @@ const I18N = {
     previewVisa: "ویزا کی حیثیت",
     exp: "میعاد",
     selectResponsibility: "ذمہ داری منتخب کریں",
-    poweredBy: "یو اے ای سی وی بلڈر — Pi Network ایپ"
+    poweredBy: "یو اے ای سی وی بلڈر — Pi Network ایپ",
+    cvEyebrow: "سی وی",
+    cvTagline: "ہنر مند پیشہ ور — یو اے ای ملازمت کے لیے تیار",
+    exportPreparing: "آپ کی سی وی فائل تیار ہو رہی ہے…",
+    exportSuccess: "ڈاؤن لوڈ شروع — فائلز فولڈر چیک کریں۔",
+    exportFailed: "ڈاؤن لوڈ ناکام۔ پہلے سی وی کا پیش نظارہ بنائیں۔",
+    downloadUnlocked: "ڈاؤن لوڈ کھلا"
   },
   ne: {
     appTitle: "युएई सिभी निर्माता",
@@ -195,7 +213,13 @@ const I18N = {
     previewVisa: "भिसा स्थिति",
     exp: "म्याद",
     selectResponsibility: "जिम्मेवारी छान्नुहोस्",
-    poweredBy: "युएई सिभी निर्माता — Pi Network एप"
+    poweredBy: "युएई सिभी निर्माता — Pi Network एप",
+    cvEyebrow: "बायोडाटा",
+    cvTagline: "कुशल पेशेवर — युएई रोजगारका लागि तयार",
+    exportPreparing: "तपाईंको सिभी फाइल तयार हुँदैछ…",
+    exportSuccess: "डाउनलोड सुरु — फाइल फोल्डर हेर्नुहोस्।",
+    exportFailed: "डाउनलोड असफल। पहिले सिभी पूर्वावलोकन बनाउनुहोस्।",
+    downloadUnlocked: "डाउनलोड खुला"
   }
 };
 

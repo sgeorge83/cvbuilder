@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -86,10 +86,10 @@
           <textarea id="experience" name="experience" rows="3"></textarea>
 
           <label for="skills" data-i18n="skills">Skills</label>
-          <textarea id="skills" name="skills" rows="2"></textarea>
+          <textarea id="skills" name="skills" rows="2" placeholder="e.g. Welding, Safety, Teamwork"></textarea>
 
           <label for="languages" data-i18n="languages">Languages</label>
-          <textarea id="languages" name="languages" rows="2"></textarea>
+          <textarea id="languages" name="languages" rows="2" placeholder="e.g. English, Hindi, Arabic"></textarea>
 
           <label for="profilePic" data-i18n="uploadPhoto">Upload Photo</label>
           <input type="file" id="profilePic" accept="image/*" capture="environment">
@@ -97,6 +97,7 @@
 
         <p id="formError" class="form-error" role="alert" hidden></p>
         <p id="draftStatus" class="draft-status" aria-live="polite"></p>
+        <p id="exportStatus" class="export-status" aria-live="polite"></p>
 
         <div class="action-row">
           <button type="button" id="generateBtn" class="btn btn-primary" data-i18n="generateBtn">Generate CV Preview</button>
@@ -111,50 +112,60 @@
 
     <section class="preview-panel" aria-label="CV preview">
       <div id="cvPreview" class="cv-document">
-        <header class="cv-header">
-          <img id="previewPic" class="cv-photo" alt="" width="110" height="110">
-          <div class="cv-title-block">
-            <h2 id="previewName"></h2>
-            <p id="previewDesignation" class="cv-designation"></p>
+        <header class="cv-banner">
+          <div class="cv-banner-inner">
+            <div class="cv-identity">
+              <p class="cv-eyebrow" data-i18n="cvEyebrow">Curriculum Vitae</p>
+              <h2 id="previewName" class="cv-name"></h2>
+              <p id="previewDesignation" class="cv-designation"></p>
+              <p class="cv-tagline" data-i18n="cvTagline">Skilled Professional — UAE Employment Ready</p>
+            </div>
+            <div id="previewPhotoWrap" class="cv-photo-wrap is-empty">
+              <img id="previewPic" class="cv-photo" alt="" width="120" height="120">
+            </div>
           </div>
         </header>
 
-        <hr class="cv-rule">
+        <div class="cv-body">
+          <div class="cv-main">
+            <section id="sectionResponsibilities" class="cv-block">
+              <h3 class="cv-block-title" data-i18n="previewResponsibilities">Professional Responsibilities</h3>
+              <ul id="previewResponsibilities" class="cv-bullet-list"></ul>
+            </section>
 
-        <section class="cv-section">
-          <h3 data-i18n="previewPersonal">Personal Information</h3>
-          <dl class="cv-details">
-            <div><dt data-i18n="previewDob">Date of Birth</dt><dd id="previewDOB"></dd></div>
-            <div><dt data-i18n="previewNationality">Nationality</dt><dd id="previewNationality"></dd></div>
-            <div><dt data-i18n="previewPassport">Passport</dt><dd id="previewPassport"></dd></div>
-            <div><dt data-i18n="previewVisa">Visa Status</dt><dd id="previewVisa"></dd></div>
-          </dl>
-        </section>
+            <section id="sectionExperience" class="cv-block">
+              <h3 class="cv-block-title" data-i18n="previewExperience">Work Experience</h3>
+              <p id="previewExperience" class="cv-prose"></p>
+            </section>
 
-        <section class="cv-section">
-          <h3 data-i18n="previewResponsibilities">Professional Responsibilities</h3>
-          <ul id="previewResponsibilities"></ul>
-        </section>
+            <section id="sectionEducation" class="cv-block">
+              <h3 class="cv-block-title" data-i18n="previewEducation">Education</h3>
+              <p id="previewEducation" class="cv-prose"></p>
+            </section>
+          </div>
 
-        <section class="cv-section">
-          <h3 data-i18n="previewEducation">Education</h3>
-          <p id="previewEducation" class="cv-text"></p>
-        </section>
+          <aside class="cv-sidebar">
+            <section class="cv-block cv-block--sidebar">
+              <h3 class="cv-block-title" data-i18n="previewPersonal">Personal Information</h3>
+              <dl class="cv-info-grid">
+                <div><dt data-i18n="previewDob">Date of Birth</dt><dd id="previewDOB"></dd></div>
+                <div><dt data-i18n="previewNationality">Nationality</dt><dd id="previewNationality"></dd></div>
+                <div><dt data-i18n="previewPassport">Passport</dt><dd id="previewPassport"></dd></div>
+                <div><dt data-i18n="previewVisa">Visa Status</dt><dd id="previewVisa"></dd></div>
+              </dl>
+            </section>
 
-        <section class="cv-section">
-          <h3 data-i18n="previewExperience">Work Experience</h3>
-          <p id="previewExperience" class="cv-text"></p>
-        </section>
+            <section id="sectionSkills" class="cv-block cv-block--sidebar">
+              <h3 class="cv-block-title" data-i18n="previewSkills">Skills</h3>
+              <div id="previewSkills" class="cv-tags"></div>
+            </section>
 
-        <section class="cv-section">
-          <h3 data-i18n="previewSkills">Skills</h3>
-          <p id="previewSkills" class="cv-text"></p>
-        </section>
-
-        <section class="cv-section">
-          <h3 data-i18n="previewLanguages">Languages</h3>
-          <p id="previewLanguages" class="cv-text"></p>
-        </section>
+            <section id="sectionLanguages" class="cv-block cv-block--sidebar">
+              <h3 class="cv-block-title" data-i18n="previewLanguages">Languages</h3>
+              <div id="previewLanguages" class="cv-tags cv-tags--soft"></div>
+            </section>
+          </aside>
+        </div>
 
         <footer class="cv-footer">
           <span data-i18n="poweredBy">UAE CV Builder — Pi Network App</span>
@@ -162,6 +173,8 @@
       </div>
     </section>
   </main>
+
+  <div id="exportStage" class="export-stage" aria-hidden="true"></div>
 
   <script src="js/i18n.js"></script>
   <script src="js/storage.js"></script>

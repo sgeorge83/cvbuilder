@@ -1,4 +1,4 @@
-const CACHE_NAME = "uae-cvbuilder-v2";
+const CACHE_NAME = "uae-cvbuilder-v3";
 const ASSETS = [
   "./",
   "./index.html",
