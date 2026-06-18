@@ -112,7 +112,8 @@ cvbuilder/
 │   ├── data/jobs.json
 │   ├── icons/
 │   ├── manifest.json
-│   └── service-worker.js
+│   ├── service-worker.js
+│   └── validation-key.txt  # Pi domain verify at /validation-key.txt
 ├── vercel.json
 ├── package.json
 ├── .env.example            # PI_API_KEY template (set in Vercel dashboard)
