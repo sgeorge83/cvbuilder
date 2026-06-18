@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c45c26">
+  <meta name="description" content="Create a professional CV for UAE jobs — built for skilled trade and blue-collar workers.">
+  <title>UAE CV Builder</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="icons/icon.svg" alt="" class="brand-icon" width="36" height="36">
+      <div>
+        <h1 data-i18n="appTitle">UAE CV Builder</h1>
+        <p class="subtitle" data-i18n="appSubtitle">Create a professional CV for UAE jobs</p>
+      </div>
+    </div>
+    <button type="button" id="langToggle" class="btn btn-ghost" data-i18n="langToggle">हिंदी / اردو</button>
+  </header>
+
+  <main class="workspace">
+    <section class="form-panel" aria-label="CV form">
+      <form id="cvForm" novalidate>
+        <fieldset>
+          <legend data-i18n="sectionPersonal">Personal Details</legend>
+          <label for="fullName" data-i18n="fullName">Full Name</label>
+          <input id="fullName" name="fullName" required autocomplete="name">
+
+          <label for="dob" data-i18n="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required>
+
+          <label for="nationality" data-i18n="nationality">Nationality</label>
+          <input id="nationality" name="nationality" autocomplete="country-name">
+
+          <label for="passportNumber" data-i18n="passportNumber">Passport Number</label>
+          <input id="passportNumber" name="passportNumber">
+
+          <label for="passportExpiry" data-i18n="passportExpiry">Passport Expiry</label>
+          <input type="date" id="passportExpiry" name="passportExpiry">
+
+          <label for="visaStatus" data-i18n="visaStatus">UAE Visa Status</label>
+          <input id="visaStatus" name="visaStatus" placeholder="e.g. Employment Visa">
+
+          <label for="visaExpiry" data-i18n="visaExpiry">Visa Expiry</label>
+          <input type="date" id="visaExpiry" name="visaExpiry">
+        </fieldset>
+
+        <fieldset>
+          <legend data-i18n="sectionProfessional">Professional Details</legend>
+          <label for="designation" data-i18n="designation">Designation / Job Title</label>
+          <input list="designations" id="designation" name="designation" required>
+          <datalist id="designations"></datalist>
+
+          <span class="field-label" data-i18n="jobResponsibilities">Job Responsibilities</span>
+          <select id="jobDescription1" aria-label="Responsibility 1"></select>
+          <select id="jobDescription2" aria-label="Responsibility 2"></select>
+          <select id="jobDescription3" aria-label="Responsibility 3"></select>
+
+          <textarea id="extraResponsibilities" name="extraResponsibilities" rows="2" data-i18n-placeholder="extraResponsibilities"></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend data-i18n="sectionAdditional">Additional Information</legend>
+          <label for="education" data-i18n="education">Education</label>
+          <textarea id="education" name="education" rows="2"></textarea>
+
+          <label for="experience" data-i18n="experience">Work Experience</label>
+          <textarea id="experience" name="experience" rows="3"></textarea>
+
+          <label for="skills" data-i18n="skills">Skills</label>
+          <textarea id="skills" name="skills" rows="2"></textarea>
+
+          <label for="languages" data-i18n="languages">Languages</label>
+          <textarea id="languages" name="languages" rows="2"></textarea>
+
+          <label for="profilePic" data-i18n="uploadPhoto">Upload Photo</label>
+          <input type="file" id="profilePic" accept="image/*" capture="environment">
+        </fieldset>
+
+        <p id="formError" class="form-error" role="alert" hidden></p>
+        <p id="draftStatus" class="draft-status" aria-live="polite"></p>
+
+        <div class="action-row">
+          <button type="button" id="generateBtn" class="btn btn-primary" data-i18n="generateBtn">Generate CV Preview</button>
+          <button type="button" id="piPayBtn" class="btn btn-accent" data-i18n="piPayBtn">Pay with Pi to Unlock Download</button>
+          <button type="button" id="devUnlockBtn" class="btn btn-muted" data-i18n="devUnlockBtn">Dev: Unlock Download (non-Pi Browser)</button>
+          <button type="button" id="downloadPngBtn" class="btn btn-secondary" disabled data-i18n="downloadPngBtn">Download PNG</button>
+          <button type="button" id="downloadPdfBtn" class="btn btn-secondary" disabled data-i18n="downloadPdfBtn">Download PDF</button>
+          <button type="button" id="clearDraftBtn" class="btn btn-ghost" data-i18n="clearDraftBtn">Clear Saved Draft</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="preview-panel" aria-label="CV preview">
+      <div id="cvPreview" class="cv-document">
+        <header class="cv-header">
+          <img id="previewPic" class="cv-photo" alt="" width="110" height="110">
+          <div class="cv-title-block">
+            <h2 id="previewName"></h2>
+            <p id="previewDesignation" class="cv-designation"></p>
+          </div>
+        </header>
+
+        <hr class="cv-rule">
+
+        <section class="cv-section">
+          <h3 data-i18n="previewPersonal">Personal Information</h3>
+          <dl class="cv-details">
+            <div><dt data-i18n="previewDob">Date of Birth</dt><dd id="previewDOB"></dd></div>
+            <div><dt data-i18n="previewNationality">Nationality</dt><dd id="previewNationality"></dd></div>
+            <div><dt data-i18n="previewPassport">Passport</dt><dd id="previewPassport"></dd></div>
+            <div><dt data-i18n="previewVisa">Visa Status</dt><dd id="previewVisa"></dd></div>
+          </dl>
+        </section>
+
+        <section class="cv-section">
+          <h3 data-i18n="previewResponsibilities">Professional Responsibilities</h3>
+          <ul id="previewResponsibilities"></ul>
+        </section>
+
+        <section class="cv-section">
+          <h3 data-i18n="previewEducation">Education</h3>
+          <p id="previewEducation" class="cv-text"></p>
+        </section>
+
+        <section class="cv-section">
+          <h3 data-i18n="previewExperience">Work Experience</h3>
+          <p id="previewExperience" class="cv-text"></p>
+        </section>
+
+        <section class="cv-section">
+          <h3 data-i18n="previewSkills">Skills</h3>
+          <p id="previewSkills" class="cv-text"></p>
+        </section>
+
+        <section class="cv-section">
+          <h3 data-i18n="previewLanguages">Languages</h3>
+          <p id="previewLanguages" class="cv-text"></p>
+        </section>
+
+        <footer class="cv-footer">
+          <span data-i18n="poweredBy">UAE CV Builder — Pi Network App</span>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/pi-payment.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

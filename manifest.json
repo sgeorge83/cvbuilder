@@ -1,0 +1,20 @@
+{
+  "name": "UAE CV Builder",
+  "short_name": "UAE CV",
+  "description": "Professional CV builder for UAE skilled trade and blue-collar workers. Pay with Pi to download.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff5eb",
+  "theme_color": "#c45c26",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

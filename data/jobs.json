@@ -1,0 +1,128 @@
+{
+  "Electrician": [
+    "Install and maintain electrical wiring systems",
+    "Diagnose and repair electrical faults and circuits",
+    "Test electrical equipment for safety compliance",
+    "Read electrical blueprints and technical diagrams",
+    "Install lighting, switches, and power outlets"
+  ],
+  "Plumber": [
+    "Install water supply and drainage pipelines",
+    "Repair leakage and blockage in plumbing systems",
+    "Maintain plumbing fixtures and water heaters",
+    "Fit pipes, valves, and sanitary fittings",
+    "Follow UAE building codes and safety standards"
+  ],
+  "Construction Laborer": [
+    "Material handling and site preparation",
+    "Assist engineers, masons, and supervisors",
+    "Operate basic construction tools and equipment",
+    "Load and unload building materials safely",
+    "Maintain cleanliness and safety on site"
+  ],
+  "Carpenter": [
+    "Woodwork and furniture construction",
+    "Repair and maintain wooden structures",
+    "Follow blueprints and precise measurements",
+    "Install doors, frames, and cabinetry",
+    "Use hand and power tools safely"
+  ],
+  "Cleaner / Janitor": [
+    "Clean offices, buildings, and common areas",
+    "Maintain sanitation equipment and supplies",
+    "Handle waste management and recycling",
+    "Deep clean floors, windows, and restrooms",
+    "Follow health and hygiene protocols"
+  ],
+  "Driver": [
+    "Transport staff, goods, or materials safely",
+    "Maintain vehicle condition and cleanliness",
+    "Follow UAE traffic regulations and routes",
+    "Complete delivery logs and trip records",
+    "Perform basic vehicle safety checks"
+  ],
+  "Security Guard": [
+    "Monitor premises for safety and security",
+    "Control access to facilities and visitors",
+    "Report incidents to supervisors promptly",
+    "Conduct patrols and CCTV monitoring",
+    "Respond to emergencies as per protocol"
+  ],
+  "Welder": [
+    "Weld metal structures per specifications",
+    "Cut and shape metal using appropriate tools",
+    "Inspect welds for quality and strength",
+    "Maintain welding equipment and safety gear",
+    "Follow hot-work safety procedures on site"
+  ],
+  "HVAC Technician": [
+    "Install and service air conditioning units",
+    "Diagnose cooling and ventilation faults",
+    "Perform routine maintenance on HVAC systems",
+    "Handle refrigerant safely per regulations",
+    "Read technical manuals and wiring diagrams"
+  ],
+  "Mason": [
+    "Lay bricks, blocks, and concrete structures",
+    "Mix mortar and prepare construction materials",
+    "Build walls, partitions, and foundations",
+    "Repair damaged masonry work",
+    "Follow architectural plans and measurements"
+  ],
+  "Painter": [
+    "Prepare surfaces for painting and coating",
+    "Apply paint, varnish, and protective finishes",
+    "Mix colors and match paint specifications",
+    "Use brushes, rollers, and spray equipment",
+    "Maintain tools and work area cleanliness"
+  ],
+  "Mechanic": [
+    "Repair and maintain vehicles or machinery",
+    "Diagnose mechanical faults and failures",
+    "Replace worn parts and perform servicing",
+    "Use diagnostic tools and workshop equipment",
+    "Keep maintenance records and job sheets"
+  ],
+  "Fabricator": [
+    "Fabricate metal components from drawings",
+    "Operate cutting, bending, and drilling machines",
+    "Assemble parts with precision and accuracy",
+    "Inspect finished products for quality",
+    "Follow workshop safety procedures"
+  ],
+  "Storekeeper": [
+    "Receive, store, and issue inventory materials",
+    "Maintain stock records and delivery notes",
+    "Organize warehouse and storage areas",
+    "Conduct stock counts and report shortages",
+    "Coordinate with procurement and site teams"
+  ],
+  "Housekeeping Supervisor": [
+    "Supervise housekeeping staff and schedules",
+    "Ensure cleanliness standards in assigned areas",
+    "Train staff on hygiene and safety procedures",
+    "Inspect rooms and report maintenance needs",
+    "Manage cleaning supplies and equipment"
+  ],
+  "Forklift Operator": [
+    "Operate forklift safely to move materials",
+    "Load and unload goods in warehouse or site",
+    "Perform daily forklift safety inspections",
+    "Stack pallets and organize storage areas",
+    "Follow site traffic and lifting procedures"
+  ],
+  "Scaffolder": [
+    "Erect and dismantle scaffolding structures",
+    "Inspect scaffolds for stability and safety",
+    "Secure platforms, guardrails, and access points",
+    "Follow height-work and fall-protection rules",
+    "Coordinate with site supervisors on layout"
+  ],
+  "Tile Fixer": [
+    "Measure, cut, and lay floor and wall tiles",
+    "Prepare surfaces and apply adhesive evenly",
+    "Grout and finish tile joints to specification",
+    "Install ceramic, marble, and porcelain tiles",
+    "Maintain tools and ensure level alignment"
+  ]
+}

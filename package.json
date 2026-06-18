@@ -1,7 +1,13 @@
 {
   "name": "cvbuilder",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "UAE CV Builder — professional CV creator for skilled trade workers with Pi Network payments",
+  "private": true,
   "scripts": {
-    "build": "echo \"no build needed\""
-  }
+    "start": "npx --yes serve . -l 3000",
+    "serve": "npm run start",
+    "build": "echo \"Static site — no build step required\""
+  },
+  "keywords": ["cv", "resume", "uae", "pi-network", "blue-collar"],
+  "license": "MIT"
 }
