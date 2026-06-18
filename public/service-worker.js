@@ -10,7 +10,8 @@ const ASSETS = [
   "./js/export.js",
   "./data/jobs.json",
   "./manifest.json",
-  "./icons/icon.svg"
+  "./icons/icon.svg",
+  "./validation-key.txt"
 ];
 
 self.addEventListener("install", (event) => {

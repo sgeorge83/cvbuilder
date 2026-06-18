@@ -5,4 +5,3 @@ Thumbs.db
 .env
 .env.*
 !.env.example
-validation-key.txt

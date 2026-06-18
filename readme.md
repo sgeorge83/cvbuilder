@@ -42,8 +42,10 @@ Pi payments need **frontend SDK + server-side approve/complete**. This repo incl
 
 1. Open your **UAE CV Builder** app.
 2. Set **App URL** to your exact **Vercel URL** (e.g. `https://your-project.vercel.app`).
-3. Add your **domain validation key** (`validation-key.txt` — for portal only, not used in code).
-4. Create a **Server API Key** (different from the validation key).
+3. Copy the **domain validation key** from the portal into `public/validation-key.txt` (must match exactly, one line, no spaces).
+4. Deploy to Vercel, then open `https://your-vercel-url/validation-key.txt` in a browser to confirm it loads.
+5. Click **Verify domain** in develop.pi.
+6. Create a **Server API Key** (different from the validation key) for `PI_API_KEY` in Vercel.
 
 ### 2. Vercel environment variable
 
@@ -114,7 +116,7 @@ cvbuilder/
 ├── vercel.json
 ├── package.json
 ├── .env.example            # PI_API_KEY template (set in Vercel dashboard)
-└── validation-key.txt      # domain validation key for develop.pi (gitignored)
+└── validation-key.txt      # copy of Pi key (keep in sync with public/)
 ```
 
 ## License
