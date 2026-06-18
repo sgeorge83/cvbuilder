@@ -45,10 +45,11 @@ function validateForm() {
 function formatDate(value) {
   if (!value) return "—";
   try {
-    return new Date(value + "T00:00:00").toLocaleDateString(
-      currentLang === "hi" ? "hi-IN" : "en-GB",
-      { day: "numeric", month: "short", year: "numeric" }
-    );
+    return new Date(value + "T00:00:00").toLocaleDateString(getDateLocale(), {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
   } catch {
     return value;
   }
@@ -169,8 +170,8 @@ function loadJobs() {
 function initApp() {
   applyTranslations();
 
-  document.getElementById("langToggle").addEventListener("click", () => {
-    setLanguage(currentLang === "en" ? "hi" : "en");
+  document.getElementById("langSelect").addEventListener("change", (e) => {
+    setLanguage(e.target.value);
     const designation = document.getElementById("designation").value;
     if (designation) populateJobSelects(designation);
   });

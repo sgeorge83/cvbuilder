@@ -61,6 +61,62 @@ body {
   color: var(--muted);
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lang-picker {
+  flex-shrink: 0;
+}
+
+.lang-select {
+  padding: 0.45rem 0.65rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  min-width: 7rem;
+}
+
+html[lang="ur"] body {
+  font-family: "Noto Nastaliq Urdu", var(--font-ui);
+}
+
+html[lang="hi"] body,
+html[lang="ne"] body {
+  font-family: "Noto Sans Devanagari", var(--font-ui);
+}
+
+html[dir="rtl"] .app-header {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .brand {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+html[dir="rtl"] .form-panel label,
+html[dir="rtl"] .field-label,
+html[dir="rtl"] fieldset legend {
+  text-align: right;
+}
+
+html[dir="rtl"] .cv-document {
+  direction: ltr;
+  text-align: left;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: minmax(320px, 420px) 1fr;
