@@ -8,6 +8,22 @@ function isPiBrowser() {
   return typeof Pi !== "undefined" && Pi && typeof Pi.init === "function";
 }
 
+function callPaymentApi(endpoint, body) {
+  return fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  }).then(async (res) => {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = new Error(data.error || `Server error (${res.status})`);
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  });
+}
+
 function initPiAuth() {
   if (!isPiBrowser()) {
     console.info("Pi SDK not available — dev mode enabled.");
@@ -43,12 +59,22 @@ function createPiPayment(onSuccess, onError) {
 
   const callbacks = {
     onReadyForServerApproval(paymentId) {
-      console.info("Pi payment awaiting approval:", paymentId);
+      console.info("Pi payment awaiting server approval:", paymentId);
+      callPaymentApi("/api/payments/approve", { paymentId }).catch((err) => {
+        console.error("Server approval request failed:", err.message);
+      });
     },
     onReadyForServerCompletion(paymentId, txid) {
-      console.info("Pi payment complete:", paymentId, txid);
-      setDownloadUnlocked(true);
-      onSuccess();
+      console.info("Pi payment awaiting server completion:", paymentId, txid);
+      callPaymentApi("/api/payments/complete", { paymentId, txid })
+        .then(() => {
+          setDownloadUnlocked(true);
+          onSuccess();
+        })
+        .catch((err) => {
+          console.error("Server completion failed:", err.message);
+          onError(new Error("paymentError"));
+        });
     },
     onCancel(paymentId) {
       console.info("Pi payment cancelled:", paymentId);
