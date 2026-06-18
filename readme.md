@@ -2,7 +2,7 @@
 
 A mobile-friendly CV builder for **UAE skilled trade and blue-collar workers**. Fill in your details, pick job responsibilities for your trade, preview a professional A4 CV, pay with **Pi Network**, then download as **PDF** or **PNG**.
 
-**Live site:** [https://sgeorge83.github.io/cvbuilder/](https://sgeorge83.github.io/cvbuilder/)
+**Live site (Vercel):** Connect your Vercel project to this repo — it deploys automatically on every push to `main`. Use your existing Vercel project URL (Pi app / browser).
 
 ## Features
 
@@ -37,9 +37,10 @@ Open [http://localhost:3000](http://localhost:3000). Use the **Dev: Unlock Downl
 ## Pi Network setup
 
 1. Register your app at [Pi Developer Portal](https://develop.pi).
-2. Set the validation key in your Pi app settings. Keep a local copy in `validation-key.txt` (this file is gitignored for new commits; an existing copy may remain in the repo history).
-3. Open the deployed URL inside **Pi Browser** to authenticate and pay.
-4. After successful payment, PNG and PDF download buttons are enabled.
+2. Set the validation key in your Pi app settings. Keep a local copy in `validation-key.txt` (gitignored for new commits).
+3. Point your Pi app URL to your **Vercel deployment URL**.
+4. Open that URL inside **Pi Browser** to authenticate and pay.
+5. After successful payment, PNG and PDF download buttons are enabled.
 
 ### Payment flow
 
@@ -48,33 +49,36 @@ Open [http://localhost:3000](http://localhost:3000). Use the **Dev: Unlock Downl
 3. Complete the 0.01 Pi payment in Pi Browser
 4. Download your CV as PDF or PNG
 
-## Deploy to GitHub Pages
+## Deploy to Vercel
 
-The repo includes `.github/workflows/pages.yml`. On push to `main`, GitHub Actions deploys the site automatically.
+This repo is configured for **Vercel** (`vercel.json` serves the `public/` folder).
 
-**One-time setup:**
+1. Import [github.com/sgeorge83/cvbuilder](https://github.com/sgeorge83/cvbuilder) in [Vercel](https://vercel.com/new).
+2. Framework preset: **Other** (static site, no build command).
+3. Root Directory: leave as **`.`** (repo root) — `vercel.json` sets `outputDirectory` to `public`.
+4. Push to `main` — Vercel redeploys automatically.
 
-1. Repo → **Settings** → **Pages**
-2. Source: **GitHub Actions**
-3. Push to `main` — your site will be at `https://<username>.github.io/cvbuilder/`
+If your existing Vercel project used **Root Directory: `public`**, either:
+- Set Root Directory back to **`.`** (recommended with `vercel.json`), or
+- Remove `outputDirectory` from `vercel.json` and keep Root Directory as `public`.
+
+Update your Pi Developer Portal app URL to match your Vercel domain after deploy.
 
 ## Project structure
 
 ```
 cvbuilder/
-├── index.html          # Main app
-├── css/styles.css      # CV-builder styling
-├── js/
-│   ├── app.js          # Form, preview, orchestration
-│   ├── i18n.js         # English / Hindi labels
-│   ├── storage.js      # Draft save & unlock state
-│   ├── pi-payment.js   # Pi SDK integration
-│   └── export.js       # PDF & PNG export
-├── data/jobs.json      # Trade designations & descriptions
-├── icons/              # PWA icons (document-themed)
-├── manifest.json
-├── service-worker.js
-└── package.json
+├── public/                 # Static site (Vercel output)
+│   ├── index.html
+│   ├── css/styles.css
+│   ├── js/                 # app, i18n, storage, pi-payment, export
+│   ├── data/jobs.json
+│   ├── icons/
+│   ├── manifest.json
+│   └── service-worker.js
+├── vercel.json
+├── package.json
+└── validation-key.txt      # local Pi key (gitignored)
 ```
 
 ## License

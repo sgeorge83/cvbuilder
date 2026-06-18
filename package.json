@@ -4,9 +4,9 @@
   "description": "UAE CV Builder — professional CV creator for skilled trade workers with Pi Network payments",
   "private": true,
   "scripts": {
-    "start": "npx --yes serve . -l 3000",
+    "start": "npx --yes serve public -l 3000",
     "serve": "npm run start",
-    "build": "echo \"Static site — no build step required\""
+    "build": "echo \"Static site — served from public/\""
   },
   "keywords": ["cv", "resume", "uae", "pi-network", "blue-collar"],
   "license": "MIT"
