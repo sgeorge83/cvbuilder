@@ -11,7 +11,7 @@ A mobile-friendly CV builder for **UAE skilled trade and blue-collar workers**. 
 - Upload or capture a profile photo (mobile camera supported)
 - Live **A4 CV preview** with formal document styling
 - **PDF and PNG download** after Pi payment
-- **English / Hindi** UI labels for migrant workers in the UAE
+- **English / Hindi / Urdu / Nepali** UI labels for migrant workers in the UAE
 - **Auto-save draft** to your browser (localStorage)
 - Form validation on required fields
 - **Pi Browser** payment integration (0.01 Pi)
@@ -36,18 +36,48 @@ Open [http://localhost:3000](http://localhost:3000). Use the **Dev: Unlock Downl
 
 ## Pi Network setup
 
-1. Register your app at [Pi Developer Portal](https://develop.pi).
-2. Set the validation key in your Pi app settings. Keep a local copy in `validation-key.txt` (gitignored for new commits).
-3. Point your Pi app URL to your **Vercel deployment URL**.
-4. Open that URL inside **Pi Browser** to authenticate and pay.
-5. After successful payment, PNG and PDF download buttons are enabled.
+Pi payments need **frontend SDK + server-side approve/complete**. This repo includes Vercel routes at `/api/payments/approve` and `/api/payments/complete`.
+
+### 1. Pi Developer Portal ([develop.pi](https://develop.pi))
+
+1. Open your **UAE CV Builder** app.
+2. Set **App URL** to your exact **Vercel URL** (e.g. `https://your-project.vercel.app`).
+3. Add your **domain validation key** (`validation-key.txt` — for portal only, not used in code).
+4. Create a **Server API Key** (different from the validation key).
+
+### 2. Vercel environment variable
+
+Vercel → project → **Settings → Environment Variables**:
+
+| Name | Value |
+|------|--------|
+| `PI_API_KEY` | Your **Server API Key** from develop.pi |
+
+Apply to **Production**, then **redeploy**.
+
+### 3. Test in Pi Browser
+
+1. Open your Vercel URL in **Pi Browser**.
+2. **Generate CV Preview** → **Pay with Pi to Unlock Download**.
+3. Approve 0.01 Pi — download unlocks after server completion.
 
 ### Payment flow
 
-1. Fill the form and tap **Generate CV Preview**
-2. Tap **Pay with Pi to Unlock Download**
-3. Complete the 0.01 Pi payment in Pi Browser
-4. Download your CV as PDF or PNG
+1. Frontend: `Pi.createPayment()`
+2. `/api/payments/approve` → Pi API approves payment
+3. User signs transaction in Pi Browser
+4. `/api/payments/complete` → Pi API completes payment
+5. PNG/PDF download enabled
+
+### Troubleshooting
+
+| Symptom | Likely cause |
+|---------|----------------|
+| "Open in Pi Browser" | Not using Pi Browser |
+| Payment hangs | `PI_API_KEY` missing in Vercel, or wrong app URL in develop.pi |
+| Payment failed after signing | Check Vercel function logs for `/api/payments/complete` |
+
+Use **Dev: Unlock Download** for local/non-Pi testing only.
 
 ## Deploy to Vercel
 
@@ -68,6 +98,11 @@ Update your Pi Developer Portal app URL to match your Vercel domain after deploy
 
 ```
 cvbuilder/
+├── api/                    # Vercel serverless (Pi payment approve/complete)
+│   ├── lib/pi-api.js
+│   └── payments/
+│       ├── approve.js
+│       └── complete.js
 ├── public/                 # Static site (Vercel output)
 │   ├── index.html
 │   ├── css/styles.css
@@ -78,7 +113,8 @@ cvbuilder/
 │   └── service-worker.js
 ├── vercel.json
 ├── package.json
-└── validation-key.txt      # local Pi key (gitignored)
+├── .env.example            # PI_API_KEY template (set in Vercel dashboard)
+└── validation-key.txt      # domain validation key for develop.pi (gitignored)
 ```
 
 ## License
